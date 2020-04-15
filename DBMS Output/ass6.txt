@@ -1,0 +1,134 @@
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 18
+Server version: 8.0.17 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use student;
+Database changed
+mysql> create table 0_rollcall(roll_no int(10),name varchar(10));
+Query OK, 0 rows affected, 1 warning (0.50 sec)
+
+mysql> create table N_rollcall(roll_no int(10),name varchar(10));
+Query OK, 0 rows affected, 1 warning (0.35 sec)
+
+mysql> insert into 0_rollcall values(1,'ANAND');
+Query OK, 1 row affected (0.19 sec)
+
+mysql> insert into 0_rollcall values(2,'SARTHAK');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into 0_rollcall values(3,'SHUBHAM');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into 0_rollcall values(4,'VINIT');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into 0_rollcall values(5,'JON');
+Query OK, 1 row affected (0.16 sec)
+
+mysql> select * from 0_rollcall;
++---------+---------+
+| roll_no | name    |
++---------+---------+
+|       1 | ANAND   |
+|       2 | SARTHAK |
+|       3 | SHUBHAM |
+|       4 | VINIT   |
+|       5 | JON     |
++---------+---------+
+5 rows in set (0.00 sec)
+
+mysql> insert into N_rollcall values(4,'sanjay');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into N_rollcall values(5,'atul');
+Query OK, 1 row affected (0.18 sec)
+
+mysql> insert into N_rollcall values(6,'purvesh');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into N_rollcall values(7,'sumedh');
+Query OK, 1 row affected (0.12 sec)
+
+mysql> select * from N_rollcall;
++---------+---------+
+| roll_no | name    |
++---------+---------+
+|       4 | sanjay  |
+|       5 | atul    |
+|       6 | purvesh |
+|       7 | sumedh  |
++---------+---------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> delimiter //
+mysql> create procedure p1_cursor()
+    -> begin
+    -> declare oldroll int(3);
+    -> declare newroll int(3);
+    -> declare oldname varchar(40);
+    -> declare dummy integer default 0;
+    -> declare oldcursor cursor for select roll_no,name from 0_rollcall;
+    -> declare newcursor cursor for select roll_no from N_rollcall;
+    -> declare continue handler for not found set dummy=1;
+    -> open oldcursor;
+    -> open newcursor;
+    -> ss:loop
+    -> fetch oldcursor into oldroll,oldname;
+    -> fetch newcursor into newroll;
+    -> if dummy=1 then
+    -> leave ss;
+    -> end if;
+    -> if oldroll<>newroll then
+    -> insert into N_rollcall values(oldroll,oldname);
+    -> end if;
+    -> end loop;
+    -> close oldcursor;
+    -> close newcursor;
+    -> end
+    -> //
+Query OK, 0 rows affected, 2 warnings (0.14 sec)
+
+mysql> call  p1_cursor();
+    -> //
+Query OK, 0 rows affected (0.38 sec)
+
+mysql> select * from 0_rollcall;
+    -> //
++---------+---------+
+| roll_no | name    |
++---------+---------+
+|       1 | ANAND   |
+|       2 | SARTHAK |
+|       3 | SHUBHAM |
+|       4 | VINIT   |
+|       5 | JON     |
++---------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select * from N_rollcall;
+    -> //
++---------+---------+
+| roll_no | name    |
++---------+---------+
+|       4 | sanjay  |
+|       5 | atul    |
+|       6 | purvesh |
+|       7 | sumedh  |
+|       1 | ANAND   |
+|       2 | SARTHAK |
+|       3 | SHUBHAM |
+|       4 | VINIT   |
++---------+---------+
+8 rows in set (0.00 sec)
+
+mysql>

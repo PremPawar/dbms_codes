@@ -1,0 +1,348 @@
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.17 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| employee           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| student            |
+| sys                |
+| world              |
++--------------------+
+8 rows in set (0.00 sec)
+
+mysql> use student;
+Database changed
+
+mysql> create table book(book_id int(10) primary key, book_name varchar(10),cost int(10));
+Query OK, 0 rows affected, 2 warnings (0.44 sec)
+
+
+mysql> create table student(stud_id int(10) primary key, stud_name varchar(10),bid int(10), foreign key(bid) references book(book_id));
+Query OK, 0 rows affected, 2 warnings (0.48 sec)
+
+mysql> desc book;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| book_id   | int(10)     | NO   | PRI | NULL    |       |
+| book_name | varchar(10) | YES  |     | NULL    |       |
+| cost      | int(10)     | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into book values(1,'JAVA',1000);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into book values(2,'JAVA',2000);
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into book values(3,'PHP',3000);
+Query OK, 1 row affected (0.20 sec)
+
+mysql> insert into book values(4,'PYTHON',4000);
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into book values(5,'AL',4000);
+Query OK, 1 row affected (0.14 sec)
+
+mysql> select * from book;
++---------+-----------+------+
+| book_id | book_name | cost |
++---------+-----------+------+
+|       1 | JAVA      | 1000 |
+|       2 | JAVA      | 2000 |
+|       3 | PHP       | 3000 |
+|       4 | PYTHON    | 4000 |
+|       5 | AL        | 4000 |
++---------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> desc student;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| stud_id   | int(10)     | NO   | PRI | NULL    |       |
+| stud_name | varchar(10) | YES  |     | NULL    |       |
+| bid       | int(10)     | YES  | MUL | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into student values(1,'anand',5);
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into student values(2,'sarthak',4);
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into student values(3,'shubham',3);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into student values(4,'vinit',2);
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into student values(5,'vivek',1);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from student;
++---------+-----------+------+
+| stud_id | stud_name | bid  |
++---------+-----------+------+
+|       1 | anand     |    5 |
+|       2 | sarthak   |    4 |
+|       3 | shubham   |    3 |
+|       4 | vinit     |    2 |
+|       5 | vivek     |    1 |
++---------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * from book;
++---------+-----------+------+
+| book_id | book_name | cost |
++---------+-----------+------+
+|       1 | JAVA      | 1000 |
+|       2 | JAVA      | 2000 |
+|       3 | PHP       | 3000 |
+|       4 | PYTHON    | 4000 |
+|       5 | AL        | 4000 |
++---------+-----------+------+
+5 rows in set (0.00 sec)
+
+
+mysql> update student set stud_name="ajit" where stud_id="5";
+Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from student;
++---------+-----------+------+
+| stud_id | stud_name | bid  |
++---------+-----------+------+
+|       1 | anand     |    5 |
+|       2 | sarthak   |    4 |
+|       3 | shubham   |    3 |
+|       4 | vinit     |    2 |
+|       5 | ajit      |    1 |
++---------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> update book set cost="0001" where book_id="5";
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> delete from student where stud_name="ajit";
+Query OK, 1 row affected (0.13 sec)
+
+mysql> select * from student;
++---------+-----------+------+
+| stud_id | stud_name | bid  |
++---------+-----------+------+
+|       1 | anand     |    5 |
+|       2 | sarthak   |    4 |
+|       3 | shubham   |    3 |
+|       4 | vinit     |    2 |
++---------+-----------+------+
+4 rows in set (0.00 sec)
+
+mysql> delete from book where book_id="1";
+Query OK, 1 row affected (0.25 sec)
+
+mysql> select * from book;
++---------+-----------+------+
+| book_id | book_name | cost |
++---------+-----------+------+
+|       2 | JAVA      | 2000 |
+|       3 | PHP       | 3000 |
+|       4 | PYTHON    | 4000 |
+|       5 | AL        |    1 |
++---------+-----------+------+
+4 rows in set (0.00 sec)
+
+mysql> select sum(cost) from book;
++-----------+
+| sum(cost) |
++-----------+
+|      9001 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select min(cost) from book;
++-----------+
+| min(cost) |
++-----------+
+|         1 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select max(cost) from book;
++-----------+
+| max(cost) |
++-----------+
+|      4000 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select avg(cost) from book;
++-----------+
+| avg(cost) |
++-----------+
+| 2250.2500 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select count(book_id) from book;
++----------------+
+| count(book_id) |
++----------------+
+|              4 |
++----------------+
+1 row in set (0.02 sec)
+
+
+mysql> select * from student where stud_name like 's%';
++---------+-----------+------+
+| stud_id | stud_name | bid  |
++---------+-----------+------+
+|       2 | sarthak   |    4 |
+|       3 | shubham   |    3 |
++---------+-----------+------+
+2 rows in set (0.00 sec)
+
+
+mysql> select * from student where stud_name like '%d';
++---------+-----------+------+
+| stud_id | stud_name | bid  |
++---------+-----------+------+
+|       1 | anand     |    5 |
++---------+-----------+------+
+1 row in set (0.00 sec)
+
+
+
+mysql> create table book1(book_id int(10) primary key, author varchar(10));
+Query OK, 0 rows affected, 1 warning (0.41 sec)
+
+mysql> insert into book1 values(1,'JAVA_AU');
+Query OK, 1 row affected (0.18 sec)
+
+mysql> insert into book1 values(2,'PHP_AU');
+Query OK, 1 row affected (0.17 sec)
+
+mysql> insert into book1 values(3,'PYTHON_AU');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into book1 values(4,'CPP_AU');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> select * from book1;
++---------+-----------+
+| book_id | author    |
++---------+-----------+
+|       1 | JAVA_AU   |
+|       2 | PHP_AU    |
+|       3 | PYTHON_AU |
+|       4 | CPP_AU    |
++---------+-----------+
+
+ 
+mysql> select * from book union select * from student;
++---------+-----------+------+
+| book_id | book_name | cost |
++---------+-----------+------+
+|       2 | JAVA      | 2000 |
+|       3 | PHP       | 3000 |
+|       4 | PYTHON    | 4000 |
+|       5 | AL        |    1 |
+|       1 | anand     |    5 |
+|       2 | sarthak   |    4 |
+|       3 | shubham   |    3 |
+|       4 | vinit     |    2 |
++---------+-----------+------+
+8 rows in set (0.08 sec)
+
+mysql> select * from book where book_id in (select book_id from book);
++---------+-----------+------+
+| book_id | book_name | cost |
++---------+-----------+------+
+|       2 | JAVA      | 2000 |
+|       3 | PHP       | 3000 |
+|       4 | PYTHON    | 4000 |
+|       5 | AL        |    1 |
++---------+-----------+------+
+4 rows in set (0.07 sec)
+
+
+mysql> select * from book where book_id in(select book_id from book1);
++---------+-----------+------+
+| book_id | book_name | cost |
++---------+-----------+------+
+|       2 | JAVA      | 2000 |
+|       3 | PHP       | 3000 |
+|       4 | PYTHON    | 4000 |
++---------+-----------+------+
+3 rows in set (0.00 sec)
+
+
+mysql> select * from book where book_id NOT in(select stud_id from student);
++---------+-----------+------+
+| book_id | book_name | cost |
++---------+-----------+------+
+|       5 | AL        |    1 |
++---------+-----------+------+
+1 row in set (0.00 sec)
+
+mysql>select book_name from book where book_id=(select bid from student where stud_id=2);
++-----------+
+| book_name |
++-----------+
+| PYTHON    |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select * from book where cost<5000;
++---------+-----------+------+
+| book_id | book_name | cost |
++---------+-----------+------+
+|       2 | JAVA      | 2000 |
+|       3 | PHP       | 3000 |
+|       4 | PYTHON    | 4000 |
+|       5 | AL        |    1 |
++---------+-----------+------+
+4 rows in set (0.00 sec)
+
+mysql>select * from book where cost<5000;
++---------+-----------+------+
+| book_id | book_name | cost |
++---------+-----------+------+
+|       2 | JAVA      | 2000 |
+|       3 | PHP       | 3000 |
+|       4 | PYTHON    | 4000 |
+|       5 | AL        |  600 |
++---------+-----------+------+
+4 rows in set (0.00 sec)
+
+
+mysql> select * from book where book_name='J%' and cost>500;
+Empty set (0.00 sec)
+
+
+mysql> select * from book where book_name='P%' or cost<1000;
++---------+-----------+------+
+| book_id | book_name | cost |
++---------+-----------+------+
+|       5 | AL        |  600 |
++---------+-----------+------+
+1 row in set (0.00 sec)

@@ -1,0 +1,142 @@
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 24
+Server version: 8.0.17 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database ass8;
+Query OK, 1 row affected (0.19 sec)
+
+mysql> use ass8;
+Database changed
+
+mysql> create table library(book_id int(10),book_name char(10),date_of_issue date);
+Query OK, 0 rows affected, 1 warning (0.44 sec)
+
+mysql> insert into library values(101,'PHP','2019/12/1');
+Query OK, 1 row affected (0.16 sec)
+
+mysql> insert into library values(102,'JAVA','2019/12/2');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into library values(103,'PYTHON','2019/12/3');
+Query OK, 1 row affected (0.13 sec)
+
+mysql> insert into library values(104,'DATABASE','2019/12/4');
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into library values(105,'CPP','2019/12/5');
+Query OK, 1 row affected (0.21 sec)
+
+mysql> select * from library;
++---------+-----------+---------------+
+| book_id | book_name | date_of_issue |
++---------+-----------+---------------+
+|     101 | PHP       | 2019-12-01    |
+|     102 | JAVA      | 2019-12-02    |
+|     103 | PYTHON    | 2019-12-03    |
+|     104 | DATABASE  | 2019-12-04    |
+|     105 | CPP       | 2019-12-05    |
++---------+-----------+---------------+
+5 rows in set (0.00 sec)
+
+mysql>create table  library_audit(book_id int(10),book_name char(20),date_of_issue date);
+Query OK, 0 rows affected, 1 warning (0.60 sec)
+
+mysql> desc library_audit;
++---------------+----------+------+-----+---------+-------+
+| Field         | Type     | Null | Key | Default | Extra |
++---------------+----------+------+-----+---------+-------+
+| book_id       | int(10)  | YES  |     | NULL    |       |
+| book_name     | char(20) | YES  |     | NULL    |       |
+| date_of_issue | date     | YES  |     | NULL    |       |
++---------------+----------+------+-----+---------+-------+
+3 rows in set (0.12 sec)
+
+mysql>create trigger upt after update on library for each row insert into library_audit values(Old.book_id,Old.book_name,Old.date_of_issue);
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> update library set book_name='NETWORK' where book_id='105';
+Query OK, 1 row affected (0.17 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from library;
++---------+-----------+---------------+
+| book_id | book_name | date_of_issue |
++---------+-----------+---------------+
+|     101 | PHP       | 2019-12-01    |
+|     102 | JAVA      | 2019-12-02    |
+|     103 | PYTHON    | 2019-12-03    |
+|     104 | DATABASE  | 2019-12-04    |
+|     105 | NETWORK   | 2019-12-05    |
++---------+-----------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from library_audit;
++---------+-----------+---------------+
+| book_id | book_name | date_of_issue |
++---------+-----------+---------------+
+|     105 | CPP       | 2019-12-05    |
++---------+-----------+---------------+
+1 row in set (0.00 sec)
+
+mysql> update library set book_name='PYTHON_REF' where book_id='101';
+Query OK, 1 row affected (0.25 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from library;
++---------+------------+---------------+
+| book_id | book_name  | date_of_issue |
++---------+------------+---------------+
+|     101 | PYTHON_REF | 2019-12-01    |
+|     102 | JAVA       | 2019-12-02    |
+|     103 | PYTHON     | 2019-12-03    |
+|     104 | DATABASE   | 2019-12-04    |
+|     105 | NETWORK    | 2019-12-05    |
++---------+------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from library_audit;
++---------+-----------+---------------+
+| book_id | book_name | date_of_issue |
++---------+-----------+---------------+
+|     105 | CPP       | 2019-12-05    |
+|     101 | PHP       | 2019-12-01    |
++---------+-----------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> create trigger delt after delete on library for each row insert into library_audit values(Old.book_id,Old.book_name,Old.date_of_issue);
+Query OK, 0 rows affected (0.19 sec)
+
+mysql> delete from library where book_id='103';
+Query OK, 1 row affected (0.20 sec)
+
+mysql> select * from library;
++---------+------------+---------------+
+| book_id | book_name  | date_of_issue |
++---------+------------+---------------+
+|     101 | PYTHON_REF | 2019-12-01    |
+|     102 | JAVA       | 2019-12-02    |
+|     104 | DATABASE   | 2019-12-04    |
+|     105 | NETWORK    | 2019-12-05    |
++---------+------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from library_audit;
++---------+-----------+---------------+
+| book_id | book_name | date_of_issue |
++---------+-----------+---------------+
+|     105 | CPP       | 2019-12-05    |
+|     101 | PHP       | 2019-12-01    |
+|     103 | PYTHON    | 2019-12-03    |
++---------+-----------+---------------+
+3 rows in set (0.00 sec)
+
+mysql>

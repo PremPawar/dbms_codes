@@ -1,0 +1,256 @@
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.17 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use student;
+Database changed
+
+mysql> create table physician(reg_no int(10) primary key,name varchar(10),tel_no int(10),city varchar(10));
+Query OK, 0 rows affected, 2 warnings (0.75 sec)
+
+mysql> create table patient(p_id int(10) primary key, p_name varchar(10),street varchar(10),city varchar(10));
+Query OK, 0 rows affected, 1 warning (0.39 sec)
+
+mysql> create table visit(p_id int(10), foreign key(p_id) references patient(p_id),reg_no int(10), foreign key(reg_no) references physician(reg_no),date_of_visit date,fees int(10));
+Query OK, 0 rows affected, 3 warnings (0.68 sec)
+
+mysql> insert into physician values(1,'ANAND',777690,'pune');
+Query OK, 1 row affected (0.20 sec)
+
+mysql> insert into physician values(2,'sarthak',1230215,'mumbai');
+Query OK, 1 row affected (0.20 sec)
+
+
+mysql> insert into physician values(3,'shubham',1210025,'nashik');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into physician values(4,'vinit',998556,'kolkata');
+Query OK, 1 row affected (0.21 sec)
+
+mysql> insert into patient values(1,'ajit','station','pune');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into patient values(2,'gulu','vareli','mumbai');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into patient values(3,'datta','kl_station','kolkata');
+Query OK, 1 row affected (0.13 sec)
+
+mysql> insert into patient values(4,'vivek','LA_station','latur');
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into visit values(4,2,'2012-12-1',20000);
+Query OK, 1 row affected (0.13 sec)
+
+mysql> insert into visit values(3,1,'2016-10-2',30000);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into visit values(1,4,'2014-11-3',40000);
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into visit values(2,3,'2015-1-7',50000);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> select * from physician;
++--------+---------+---------+---------+
+| reg_no | name    | tel_no  | city    |
++--------+---------+---------+---------+
+|      1 | ANAND   |  777690 | pune    |
+|      2 | sarthak | 1230215 | mumbai  |
+|      3 | shubham | 1210025 | nashik  |
+|      4 | vinit   |  998556 | kolkata |
++--------+---------+---------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from patient;
++------+--------+------------+---------+
+| p_id | p_name | street     | city    |
++------+--------+------------+---------+
+|    1 | ajit   | station    | pune    |
+|    2 | gulu   | vareli     | mumbai  |
+|    3 | datta  | kl_station | kolkata |
+|    4 | vivek  | LA_station | latur   |
++------+--------+------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from visit;
++------+--------+---------------+-------+
+| p_id | reg_no | date_of_visit | fees  |
++------+--------+---------------+-------+
+|    4 |      2 | 2012-12-01    | 20000 |
+|    3 |      1 | 2016-10-02    | 30000 |
+|    1 |      4 | 2014-11-03    | 40000 |
+|    2 |      3 | 2015-01-07    | 50000 |
++------+--------+---------------+-------+
+4 rows in set (0.00 sec)
+
+
+mysql> select physician.reg_no,physician.name,visit.p_id,visit.date_of_visit from physician inner join visit on physician.reg_no=visit.reg_no;
++--------+---------+------+---------------+
+| reg_no | name    | p_id | date_of_visit |
++--------+---------+------+---------------+
+|      1 | ANAND   |    3 | 2016-10-02    |
+|      2 | sarthak |    4 | 2014-11-03    |
+|      3 | shubham |    2 | 2015-01-07    |
+|      4 | vinit   |    1 | 2014-11-03    |
++--------+---------+------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> select physician.reg_no,physician.name,visit.p_id,visit.date_of_visit from physician left  join visit on physician.reg_no=visit.reg_no;
++--------+---------+------+---------------+
+| reg_no | name    | p_id | date_of_visit |
++--------+---------+------+---------------+
+|      1 | ANAND   |    3 | 2016-10-02    |
+|      2 | sarthak |    4 | 2014-11-03    |
+|      3 | shubham |    2 | 2015-01-07    |
+|      4 | vinit   |    1 | 2014-11-03    |
++--------+---------+------+---------------+
+4 rows in set (0.00 sec)
+
+
+
+
+mysql> select physician.reg_no,physician.name,visit.p_id,visit.date_of_visit from physician right  join visit on physician.reg_no=visit.reg_no;
++--------+---------+------+---------------+
+| reg_no | name    | p_id | date_of_visit |
++--------+---------+------+---------------+
+|      2 | sarthak |    4 | 2014-11-03    |
+|      1 | ANAND   |    3 | 2016-10-02    |
+|      4 | vinit   |    1 | 2014-11-03    |
+|      3 | shubham |    2 | 2015-01-07    |
++--------+---------+------+---------------+
+4 rows in set (0.00 sec)
+
+
+mysql> select physician.reg_no,physician.name,visit.p_id,visit.date_of_visit from physician left outer join visit on physician.reg_no=visit.reg_no union select physician.reg_no,physician.name,visit.p_id,visit.date_of_visit from physician right  join visit on physician.reg_no=visit.reg_no;
++--------+---------+------+---------------+
+| reg_no | name    | p_id | date_of_visit |
++--------+---------+------+---------------+
+|      1 | ANAND   |    3 | 2016-10-02    |
+|      2 | sarthak |    4 | 2014-11-03    |
+|      3 | shubham |    2 | 2015-01-07    |
+|      4 | vinit   |    1 | 2014-11-03    |
++--------+---------+------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> select patient.p_name,patient.city,visit.reg_no,visit.date_of_visit from patient inner join visit on  patient.p_id=visit.p_id;
++--------+---------+--------+---------------+
+| p_name | city    | reg_no | date_of_visit |
++--------+---------+--------+---------------+
+| ajit   | pune    |      4 | 2014-11-03    |
+| gulu   | mumbai  |      3 | 2015-01-07    |
+| datta  | kolkata |      1 | 2016-10-02    |
+| vivek  | latur   |      2 | 2014-11-03    |
++--------+---------+--------+---------------+
+4 rows in set (0.10 sec)
+
+
+mysql> select patient.p_name,patient.city,visit.reg_no,visit.date_of_visit from patient left join visit on  patient.p_id=visit.p_id;
++--------+---------+--------+---------------+
+| p_name | city    | reg_no | date_of_visit |
++--------+---------+--------+---------------+
+| ajit   | pune    |      4 | 2014-11-03    |
+| gulu   | mumbai  |      3 | 2015-01-07    |
+| datta  | kolkata |      1 | 2016-10-02    |
+| vivek  | latur   |      2 | 2014-11-03    |
++--------+---------+--------+---------------+
+4 rows in set (0.00 sec)
+
+
+
+mysql> select patient.p_name,patient.city,visit.reg_no,visit.date_of_visit from patient right join visit on  patient.p_id=visit.p_id;
++--------+---------+--------+---------------+
+| p_name | city    | reg_no | date_of_visit |
++--------+---------+--------+---------------+
+| vivek  | latur   |      2 | 2014-11-03    |
+| datta  | kolkata |      1 | 2016-10-02    |
+| ajit   | pune    |      4 | 2014-11-03    |
+| gulu   | mumbai  |      3 | 2015-01-07    |
++--------+---------+--------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> select patient.p_name,patient.city,visit.reg_no,visit.date_of_visit from patient right join visit on  patient.p_id=visit.p_id union select patient.p_name,patient.city,visit.reg_no,visit.date_of_visit from patient left join visit on  patient.p_id=visit.p_id;
++--------+---------+--------+---------------+
+| p_name | city    | reg_no | date_of_visit |
++--------+---------+--------+---------------+
+| vivek  | latur   |      2 | 2014-11-03    |
+| datta  | kolkata |      1 | 2016-10-02    |
+| ajit   | pune    |      4 | 2014-11-03    |
+| gulu   | mumbai  |      3 | 2015-01-07    |
++--------+---------+--------+---------------+
+4 rows in set (0.00 sec)
+
+mysql>
+
+
+mysql> select p_name,city from patient where p_id=any(select p_id from visit where date_of_visit="2012-12-01");
++--------+-------+
+| p_name | city  |
++--------+-------+
+| vivek  | latur |
++--------+-------+
+1 row in set (0.00 sec)
+
+mysql> select p.name, count(p_id) from physician p,visit v where p.reg_no=v.reg_no group by v.reg_no;
++---------+-------------+
+| name    | count(p_id) |
++---------+-------------+
+| ANAND   |           1 |
+| sarthak |           1 |
+| shubham |           1 |
+| vinit   |           1 |
++---------+-------------+
+4 rows in set (0.00 sec)
+
+mysql>select date_of_visit,sum(fees) from visit group by date_of_visit;
++---------------+-----------+
+| date_of_visit | sum(fees) |
++---------------+-----------+
+| 2014-11-03    |     60000 |
+| 2016-10-02    |     30000 |
+| 2015-01-07    |     50000 |
++---------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql>create view v2 as select date_of_visit,fees from visit;
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> select * from v2;
++---------------+-------+
+| date_of_visit | fees  |
++---------------+-------+
+| 2014-11-03    | 20000 |
+| 2016-10-02    | 30000 |
+| 2014-11-03    | 40000 |
+| 2015-01-07    | 50000 |
++---------------+-------+
+4 rows in set (0.00 sec)
+
+mysql>update v2 set fees="000" where date_of_visit="2014-11-03";
+Query OK, 2 rows affected (0.07 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from v2;
++---------------+-------+
+| date_of_visit | fees  |
++---------------+-------+
+| 2014-11-03    |     0 |
+| 2016-10-02    | 30000 |
+| 2014-11-03    |     0 |
+| 2015-01-07    | 50000 |
++---------------+-------+
+4 rows in set (0.00 sec)
+
+mysql>drop view v2;
+Query OK, 0 rows affected (0.15 sec)
+
+

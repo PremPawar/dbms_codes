@@ -1,0 +1,174 @@
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 17
+Server version: 8.0.17 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use student;
+Database changed
+mysql> create table emp(eid int(10), ename varchar(25),date_of_join date);
+Query OK, 0 rows affected, 1 warning (0.55 sec)
+
+mysql> create table project(pid int(10) primary key, p_title varchar(10),cost int(10));
+Query OK, 0 rows affected, 2 warnings (0.45 sec)
+
+mysql> desc emp;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| eid          | int(10)     | YES  |     | NULL    |       |
+| ename        | varchar(25) | YES  |     | NULL    |       |
+| date_of_join | date        | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+3 rows in set (0.04 sec)
+
+mysql> desc project;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| pid     | int(10)     | NO   | PRI | NULL    |       |
+| p_title | varchar(10) | YES  |     | NULL    |       |
+| cost    | int(10)     | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table emp add primary key(eid);
+Query OK, 0 rows affected (1.13 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table emp add salary int(10);
+Query OK, 0 rows affected, 1 warning (0.29 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> alter table emp change eid eid int(10) auto_increment;
+Query OK, 0 rows affected, 1 warning (0.87 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> desc emp;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| eid          | int(10)     | NO   | PRI | NULL    | auto_increment |
+| ename        | varchar(25) | YES  |     | NULL    |                |
+| date_of_join | date        | YES  |     | NULL    |                |
+| salary       | int(10)     | YES  |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql>alter table project change pid pid int(10) auto_increment;
+Query OK, 0 rows affected, 1 warning (0.88 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> desc project;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| pid     | int(10)     | NO   | PRI | NULL    | auto_increment |
+| p_title | varchar(10) | YES  |     | NULL    |                |
+| cost    | int(10)     | YES  |     | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> create index in1 on emp(eid);
+Query OK, 0 rows affected (0.36 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table emp add pid int(10);
+Query OK, 0 rows affected, 1 warning (0.85 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> alter table emp add foreign key(eid) references project(pid);
+Query OK, 0 rows affected (0.95 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into project values(NULL,'JAVA',500);
+Query OK, 1 row affected (0.16 sec)
+
+mysql> insert into project values(NULL,'python',1000);
+Query OK, 1 row affected (0.13 sec)
+
+mysql> select * from project;
++-----+---------+------+
+| pid | p_title | cost |
++-----+---------+------+
+|   1 | JAVA    |  500 |
+|   2 | python  | 1000 |
++-----+---------+------+
+2 rows in set (0.00 sec)
+
+mysql>insert into emp values(NULL,'ANAND','2019/12/01',10000,1);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into emp values(NULL,'SARTHAK','2019/05/01',10,2);
+Query OK, 1 row affected (0.18 sec)
+
+mysql> select * from emp;
++-----+---------+--------------+--------+------+
+| eid | ename   | date_of_join | salary | pid  |
++-----+---------+--------------+--------+------+
+|   1 | ANAND   | 2019-12-01   |  10000 |    1 |
+|   2 | SARTHAK | 2019-05-01   |     10 |    2 |
++-----+---------+--------------+--------+------+
+2 rows in set (0.00 sec)
+
+mysql> create view view1 as select eid,ename from emp;
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> select * from view1;
++-----+---------+
+| eid | ename   |
++-----+---------+
+|   1 | ANAND   |
+|   2 | SARTHAK |
++-----+---------+
+2 rows in set (0.03 sec)
+
+
+mysql>select * from project;
++-----+---------+------+
+| pid | p_title | cost |
++-----+---------+------+
+|   1 | JAVA    |  500 |
+|   2 | python  | 1000 |
+|   4 | CPP     |  900 |
+|   6 | DBMS    |  200 |
++-----+---------+------+
+4 rows in set (0.00 sec)
+
+mysql>  drop view view1;
+Query OK, 0 rows affected (0.52 sec)
+
+mysql> show indexes from emp;
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| emp   |          0 | PRIMARY  |            1 | eid         | A         |           4 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| emp   |          1 | in1      |            1 | eid         | A         |           4 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+2 rows in set (0.21 sec)
+
+mysql>
+mysql> alter table emp drop date_of_join;
+Query OK, 0 rows affected (1.25 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++-----+---------+--------+------+
+| eid | ename   | salary | pid  |
++-----+---------+--------+------+
+|   1 | ANAND   |  10000 |    1 |
+|   2 | SARTHAK |     10 |    2 |
+|   4 | VINIT   |   5000 |    4 |
+|   6 | shubham | 100000 |    5 |
++-----+---------+--------+------+
+4 rows in set (0.00 sec)
+
+mysql> drop table emp;
+Query OK, 0 rows affected (0.43 sec)

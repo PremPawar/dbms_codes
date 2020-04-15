@@ -1,0 +1,193 @@
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 20
+Server version: 8.0.17 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use student;
+Database changed
+mysql> create table stud_mark(name varchar(20), total_marks int(20));
+Query OK, 0 rows affected, 1 warning (0.38 sec)
+
+mysql> create table result(roll_no int(20) primary key,name varchar(20),class varchar(20));
+Query OK, 0 rows affected, 1 warning (0.46 sec)
+
+mysql> desc stud_mark;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| name        | varchar(20) | YES  |     | NULL    |       |
+| total_marks | int(20)     | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+2 rows in set (0.10 sec)
+
+mysql> desc result;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| roll_no | int(20)     | NO   | PRI | NULL    |       |
+| name    | varchar(20) | YES  |     | NULL    |       |
+| class   | varchar(20) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into stud_mark values('ANAND',1000);
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into stud_mark values('SARTHAK',500);
+Query OK, 1 row affected (0.18 sec)
+
+mysql> insert into stud_mark values('SHUBHAM',900);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into stud_mark values('VINIT',800);
+Query OK, 1 row affected (0.17 sec)
+
+mysql> insert into stud_mark values('PURVESH',750);
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into stud_mark values('DILIP',400);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from stud_mark;
++---------+-------------+
+| name    | total_marks |
++---------+-------------+
+| ANAND   |        1000 |
+| SARTHAK |         500 |
+| SHUBHAM |         900 |
+| VINIT   |         800 |
+| PURVESH |         750 |
+| DILIP   |         400 |
++---------+-------------+
+6 rows in set (0.00 sec)
+
+mysql> insert into result(roll_no,name)values(1,'ANAND');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into result(roll_no,name)values(2,'DILIP');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into result(roll_no,name)values(3,'SARTHAK');
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into result(roll_no,name)values(4,'PURVESH');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into result(roll_no,name)values(5,'SHUBHAM');
+Query OK, 1 row affected (0.16 sec)
+
+mysql> insert into result(roll_no,name)values(6,'VINIT');
+Query OK, 1 row affected (0.08 sec)
+
+mysql>select * from result;
++---------+---------+-------+
+| roll_no | name    | class |
++---------+---------+-------+
+|       1 | ANAND   | NULL  |
+|       2 | DILIP   | NULL  |
+|       3 | SARTHAK | NULL  |
+|       4 | PURVESH | NULL  |
+|       5 | SHUBHAM | NULL  |
+|       6 | VINIT   | NULL  |
++---------+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql>delimiter //
+mysql> create procedure p_grade(IN r int(10),OUT grade varchar(20))
+    -> begin
+    -> declare t_marks int(10);
+    -> select total_marks into t_marks from stud_mark where name=(select name from result where roll_no=r);
+    -> if t_marks>=990 and t_marks<=1500 then
+    -> select 'destinction'into grade;
+    -> update result set class='destinction' where roll_no=r;
+    -> elseif t_marks>=900 and t_marks<=989 then
+    -> select 'firstclass' into grade;
+    -> update reslut set class='firstclass' where roll_no=r;
+    -> elseif t_marks>=200 and t_marks<=700 then
+    -> select 'secondclass' into grade;
+    -> update result set class='secondclass' where roll_no=r;
+    -> else
+    -> select '--'into grade;
+    -> update result set class='--' where roll_no=r;
+    -> end if;
+    -> end
+    -> //
+Query OK, 0 rows affected, 2 warnings (0.20 sec)
+
+mysql> create function func_grade(r int(10))
+    -> returns varchar(20)
+    -> deterministic
+    -> begin
+    -> declare grade varchar(20);
+    -> call p_grade(r,grade);
+    -> return grade;
+    -> end //
+Query OK, 0 rows affected, 1 warning (0.10 sec)
+
+
+mysql> select func_grade(1);
+    -> //
++---------------+
+| func_grade(1) |
++---------------+
+| destinction   |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select func_grade(2);
+    -> //
++---------------+
+| func_grade(2) |
++---------------+
+| secondclass   |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select func_grade(3);
+    -> //
++---------------+
+| func_grade(3) |
++---------------+
+| secondclass   |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select func_grade(4);
+    -> //
++---------------+
+| func_grade(4) |
++---------------+
+| destinction   |
++---------------+
+1 row in set (0.15 sec)
+
+mysql> select func_grade(6);
+    -> //
++---------------+
+| func_grade(6) |
++---------------+
+| --            |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select * from result;
+    -> //
++---------+---------+-------------+
+| roll_no | name    | class       |
++---------+---------+-------------+
+|       1 | ANAND   | destinction |
+|       2 | DILIP   | secondclass |
+|       3 | SARTHAK | secondclass |
+|       4 | PURVESH | destinction |
+|       5 | SHUBHAM | NULL        |
+|       6 | VINIT   | --          |
++---------+---------+-------------+
+6 rows in set (0.00 sec)

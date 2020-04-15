@@ -1,0 +1,167 @@
+Microsoft Windows [Version 10.0.17134.1006]
+(c) 2018 Microsoft Corporation. All rights reserved.
+
+C:\Users\Anand  RNS>mongo
+MongoDB shell version v4.2.0
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("042db693-736c-4290-af15-465df3a8bb5e") }
+MongoDB server version: 4.2.0
+Server has startup warnings:
+2019-10-09T05:23:16.691+0530 I  CONTROL  [initandlisten]
+2019-10-09T05:23:16.691+0530 I  CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2019-10-09T05:23:16.691+0530 I  CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2019-10-09T05:23:16.691+0530 I  CONTROL  [initandlisten]
+---
+Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+and anyone you share the URL with. MongoDB may use this information to make product
+improvements and to suggest MongoDB products and deployment options to you.
+
+To enable free monitoring, run the following command: db.enableFreeMonitoring()
+To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+
+> use ass13;
+switched to db ass13
+> db.createCollection("stud");
+{ "ok" : 1 }
+> db.stud.insert({"sid":1,"name":"ANAND","marks":100,"dept":"computer"});
+WriteResult({ "nInserted" : 1 })
+> db.stud.insert({"sid":2,"name":"SARTHAK","marks":90,"dept":"IT"});
+WriteResult({ "nInserted" : 1 })
+> db.stud.insert({"sid":3,"name":"SHUBHAM","marks":80,"dept":"E&TC"});
+WriteResult({ "nInserted" : 1 })
+> db.stud.insert({"sid":4,"name":"VINIT","marks":85,"dept":"CIVIL"});
+WriteResult({ "nInserted" : 1 })
+> db.stud.insert({"sid":5,"name":"JON","marks":70,"dept":"MECH"});
+WriteResult({ "nInserted" : 1 })
+
+> db.stud.find();
+{ "_id" : ObjectId("5d9d4131c70b36bb96f53cc2"), "sid" : 1, "name" : "ANAND", "marks" : 100, "dept" : "computer" }
+{ "_id" : ObjectId("5d9d414cc70b36bb96f53cc3"), "sid" : 2, "name" : "SARTHAK", "marks" : 90, "dept" : "IT" }
+{ "_id" : ObjectId("5d9d416ec70b36bb96f53cc4"), "sid" : 3, "name" : "SHUBHAM", "marks" : 80, "dept" : "E&TC" }
+{ "_id" : ObjectId("5d9d4186c70b36bb96f53cc5"), "sid" : 4, "name" : "VINIT", "marks" : 85, "dept" : "CIVIL" }
+{ "_id" : ObjectId("5d9d41a6c70b36bb96f53cc6"), "sid" : 5, "name" : "JON", "marks" : 70, "dept" : "MECH" }
+> db.stud.find().pretty();
+{
+        "_id" : ObjectId("5d9d4131c70b36bb96f53cc2"),
+        "sid" : 1,
+        "name" : "ANAND",
+        "marks" : 100,
+        "dept" : "computer"
+}
+{
+        "_id" : ObjectId("5d9d414cc70b36bb96f53cc3"),
+        "sid" : 2,
+        "name" : "SARTHAK",
+        "marks" : 90,
+        "dept" : "IT"
+}
+{
+        "_id" : ObjectId("5d9d416ec70b36bb96f53cc4"),
+        "sid" : 3,
+        "name" : "SHUBHAM",
+        "marks" : 80,
+        "dept" : "E&TC"
+}
+{
+        "_id" : ObjectId("5d9d4186c70b36bb96f53cc5"),
+        "sid" : 4,
+        "name" : "VINIT",
+        "marks" : 85,
+        "dept" : "CIVIL"
+}
+{
+        "_id" : ObjectId("5d9d41a6c70b36bb96f53cc6"),
+        "sid" : 5,
+        "name" : "JON",
+        "marks" : 70,
+        "dept" : "MECH"
+}
+
+> db.stud.find().sort({name:-1}).pretty();
+{
+        "_id" : ObjectId("5d9d4186c70b36bb96f53cc5"),
+        "sid" : 4,
+        "name" : "VINIT",
+        "marks" : 85,
+        "dept" : "CIVIL"
+}
+{
+        "_id" : ObjectId("5d9d416ec70b36bb96f53cc4"),
+        "sid" : 3,
+        "name" : "SHUBHAM",
+        "marks" : 80,
+        "dept" : "E&TC"
+}
+{
+        "_id" : ObjectId("5d9d414cc70b36bb96f53cc3"),
+        "sid" : 2,
+        "name" : "SARTHAK",
+        "marks" : 90,
+        "dept" : "IT"
+}
+{
+        "_id" : ObjectId("5d9d41a6c70b36bb96f53cc6"),
+        "sid" : 5,
+        "name" : "JON",
+        "marks" : 70,
+        "dept" : "MECH"
+}
+{
+        "_id" : ObjectId("5d9d4131c70b36bb96f53cc2"),
+        "sid" : 1,
+        "name" : "ANAND",
+        "marks" : 100,
+        "dept" : "computer"
+}
+
+
+> db.stud.find({"marks":{$gte:70}})
+{ "_id" : ObjectId("5d9d4131c70b36bb96f53cc2"), "sid" : 1, "name" : "ANAND", "marks" : 100, "dept" : "computer" }
+{ "_id" : ObjectId("5d9d414cc70b36bb96f53cc3"), "sid" : 2, "name" : "SARTHAK", "marks" : 90, "dept" : "IT" }
+{ "_id" : ObjectId("5d9d416ec70b36bb96f53cc4"), "sid" : 3, "name" : "SHUBHAM", "marks" : 80, "dept" : "E&TC" }
+{ "_id" : ObjectId("5d9d4186c70b36bb96f53cc5"), "sid" : 4, "name" : "VINIT", "marks" : 85, "dept" : "CIVIL" }
+{ "_id" : ObjectId("5d9d41a6c70b36bb96f53cc6"), "sid" : 5, "name" : "JON", "marks" : 70, "dept" : "MECH" }
+> db.stud.find({"marks":{$lt:90}}).pretty()
+{
+        "_id" : ObjectId("5d9d416ec70b36bb96f53cc4"),
+        "sid" : 3,
+        "name" : "SHUBHAM",
+        "marks" : 80,
+        "dept" : "E&TC"
+}
+{
+        "_id" : ObjectId("5d9d4186c70b36bb96f53cc5"),
+        "sid" : 4,
+        "name" : "VINIT",
+        "marks" : 85,
+        "dept" : "CIVIL"
+}
+{
+        "_id" : ObjectId("5d9d41a6c70b36bb96f53cc6"),
+        "sid" : 5,
+        "name" : "JON",
+        "marks" : 70,
+        "dept" : "MECH"
+}
+
+
+> db.stud.update({"name":"ANAND"},{$set:{"marks":98}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.stud.find();
+{ "_id" : ObjectId("5d9d4131c70b36bb96f53cc2"), "sid" : 1, "name" : "ANAND", "marks" : 98, "dept" : "computer" }
+{ "_id" : ObjectId("5d9d414cc70b36bb96f53cc3"), "sid" : 2, "name" : "SARTHAK", "marks" : 90, "dept" : "IT" }
+{ "_id" : ObjectId("5d9d416ec70b36bb96f53cc4"), "sid" : 3, "name" : "SHUBHAM", "marks" : 80, "dept" : "E&TC" }
+{ "_id" : ObjectId("5d9d4186c70b36bb96f53cc5"), "sid" : 4, "name" : "VINIT", "marks" : 85, "dept" : "CIVIL" }
+{ "_id" : ObjectId("5d9d41a6c70b36bb96f53cc6"), "sid" : 5, "name" : "JON", "marks" : 70, "dept" : "MECH" }
+>
+> db.stud.remove({"sid":5})
+WriteResult({ "nRemoved" : 1 })
+> db.stud.find();
+{ "_id" : ObjectId("5d9d4131c70b36bb96f53cc2"), "sid" : 1, "name" : "ANAND", "marks" : 98, "dept" : "computer" }
+{ "_id" : ObjectId("5d9d414cc70b36bb96f53cc3"), "sid" : 2, "name" : "SARTHAK", "marks" : 90, "dept" : "IT" }
+{ "_id" : ObjectId("5d9d416ec70b36bb96f53cc4"), "sid" : 3, "name" : "SHUBHAM", "marks" : 80, "dept" : "E&TC" }
+{ "_id" : ObjectId("5d9d4186c70b36bb96f53cc5"), "sid" : 4, "name" : "VINIT", "marks" : 85, "dept" : "CIVIL" }
