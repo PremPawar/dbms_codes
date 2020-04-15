@@ -1,0 +1,152 @@
+Microsoft Windows [Version 10.0.17134.1006]
+(c) 2018 Microsoft Corporation. All rights reserved.
+
+C:\Users\Anand  RNS>mongo
+MongoDB shell version v4.2.0
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("a1ee60f4-238e-4769-b274-d021abc3d688") }
+MongoDB server version: 4.2.0
+Server has startup warnings:
+2019-10-09T05:23:16.691+0530 I  CONTROL  [initandlisten]
+2019-10-09T05:23:16.691+0530 I  CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2019-10-09T05:23:16.691+0530 I  CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2019-10-09T05:23:16.691+0530 I  CONTROL  [initandlisten]
+---
+Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+and anyone you share the URL with. MongoDB may use this information to make product
+improvements and to suggest MongoDB products and deployment options to you.
+
+To enable free monitoring, run the following command: db.enableFreeMonitoring()
+To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+
+> use ass10;
+switched to db ass10
+> db.createCollection("book");
+{ "ok" : 1 }
+> db.book.insert({"b_id":01,"b_title":"DBMS","b_author":"frozen" ,"cost":3000,"category":"CN"});
+WriteResult({ "nInserted" : 1 })
+> db.book.insert({"b_id":02,"b_title":"NETWORKING","b_author":"Jskatre" ,"cost":3400,"category":"CN"});
+WriteResult({ "nInserted" : 1 })
+> db.book.insert({"b_id":03,"b_title":"PYTHON","b_author":"R.S.ANAND" ,"cost":4000,"category":"PL"});
+WriteResult({ "nInserted" : 1 })
+> db.book.insert({"b_id":04,"b_title":"JAVA","b_author":"B.SARTHAK" ,"cost":4000,"category":"PL"});
+WriteResult({ "nInserted" : 1 })
+> db.book.insert({"b_id":05,"b_title":"CPP","b_author":"D.SHUBHAM" ,"cost":500,"category":"PL"});
+WriteResult({ "nInserted" : 1 })
+> db.book.insert({"b_id":06,"b_title":"PHP","b_author":"S.VINIT" ,"cost":900,"category":"PL"});
+WriteResult({ "nInserted" : 1 })
+> db.book.find();
+{ "_id" : ObjectId("5d9d23bf706bb586f75c0a4f"), "b_id" : 1, "b_title" : "DBMS", "b_author" : "frozen", "cost" : 3000, "category" : "CN" }
+{ "_id" : ObjectId("5d9d240e706bb586f75c0a50"), "b_id" : 2, "b_title" : "NETWORKING", "b_author" : "Jskatre", "cost" : 3400, "category" : "CN" }
+{ "_id" : ObjectId("5d9d2445706bb586f75c0a51"), "b_id" : 2, "b_title" : "PYTHON", "b_author" : "R.S.ANAND", "cost" : 4000, "category" : "PL" }
+{ "_id" : ObjectId("5d9d2465706bb586f75c0a52"), "b_id" : 2, "b_title" : "JAVA", "b_author" : "B.SARTHAK", "cost" : 4000, "category" : "PL" }
+{ "_id" : ObjectId("5d9d2496706bb586f75c0a53"), "b_id" : 2, "b_title" : "CPP", "b_author" : "D.SHUBHAM", "cost" : 500, "category" : "PL" }
+{ "_id" : ObjectId("5d9d24b8706bb586f75c0a54"), "b_id" : 2, "b_title" : "PHP", "b_author" : "S.VINIT", "cost" : 900, "category" : "PL" }
+> db.book.find().pretty();
+{
+        "_id" : ObjectId("5d9d23bf706bb586f75c0a4f"),
+        "b_id" : 1,
+        "b_title" : "DBMS",
+        "b_author" : "frozen",
+        "cost" : 3000,
+        "category" : "CN"
+}
+{
+        "_id" : ObjectId("5d9d240e706bb586f75c0a50"),
+        "b_id" : 2,
+        "b_title" : "NETWORKING",
+        "b_author" : "Jskatre",
+        "cost" : 3400,
+        "category" : "CN"
+}
+{
+        "_id" : ObjectId("5d9d2445706bb586f75c0a51"),
+        "b_id" : 2,
+        "b_title" : "PYTHON",
+        "b_author" : "R.S.ANAND",
+        "cost" : 4000,
+        "category" : "PL"
+}
+{
+        "_id" : ObjectId("5d9d2465706bb586f75c0a52"),
+        "b_id" : 2,
+        "b_title" : "JAVA",
+        "b_author" : "B.SARTHAK",
+        "cost" : 4000,
+        "category" : "PL"
+}
+{
+        "_id" : ObjectId("5d9d2496706bb586f75c0a53"),
+        "b_id" : 2,
+        "b_title" : "CPP",
+        "b_author" : "D.SHUBHAM",
+        "cost" : 500,
+        "category" : "PL"
+}
+{
+        "_id" : ObjectId("5d9d24b8706bb586f75c0a54"),
+        "b_id" : 2,
+        "b_title" : "PHP",
+        "b_author" : "S.VINIT",
+        "cost" : 900,
+        "category" : "PL"
+}
+> db.book.update({"cost":900},{$set:{"b_id":06}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.book.find();
+{ "_id" : ObjectId("5d9d23bf706bb586f75c0a4f"), "b_id" : 1, "b_title" : "DBMS", "b_author" : "frozen", "cost" : 3000, "category" : "CN" }
+{ "_id" : ObjectId("5d9d240e706bb586f75c0a50"), "b_id" : 2, "b_title" : "NETWORKING", "b_author" : "Jskatre", "cost" : 3400, "category" : "CN" }
+{ "_id" : ObjectId("5d9d2445706bb586f75c0a51"), "b_id" : 2, "b_title" : "PYTHON", "b_author" : "R.S.ANAND", "cost" : 4000, "category" : "PL" }
+{ "_id" : ObjectId("5d9d2465706bb586f75c0a52"), "b_id" : 2, "b_title" : "JAVA", "b_author" : "B.SARTHAK", "cost" : 4000, "category" : "PL" }
+{ "_id" : ObjectId("5d9d2496706bb586f75c0a53"), "b_id" : 2, "b_title" : "CPP", "b_author" : "D.SHUBHAM", "cost" : 500, "category" : "PL" }
+{ "_id" : ObjectId("5d9d24b8706bb586f75c0a54"), "b_id" : 6, "b_title" : "PHP", "b_author" : "S.VINIT", "cost" : 900, "category" : "PL" }
+
+> db.book.remove({"b_id":1});
+WriteResult({ "nRemoved" : 1 })
+> db.book.find();
+{ "_id" : ObjectId("5d9d240e706bb586f75c0a50"), "b_id" : 2, "b_title" : "NETWORKING", "b_author" : "Jskatre", "cost" : 3400, "category" : "CN" }
+{ "_id" : ObjectId("5d9d2445706bb586f75c0a51"), "b_id" : 2, "b_title" : "PYTHON", "b_author" : "R.S.ANAND", "cost" : 4000, "category" : "PL" }
+{ "_id" : ObjectId("5d9d2465706bb586f75c0a52"), "b_id" : 2, "b_title" : "JAVA", "b_author" : "B.SARTHAK", "cost" : 4000, "category" : "PL" }
+{ "_id" : ObjectId("5d9d2496706bb586f75c0a53"), "b_id" : 2, "b_title" : "CPP", "b_author" : "D.SHUBHAM", "cost" : 500, "category" : "PL" }
+{ "_id" : ObjectId("5d9d24b8706bb586f75c0a54"), "b_id" : 6, "b_title" : "PHP", "b_author" : "S.VINIT", "cost" : 900, "category" : "PL" }
+
+> db.book.find({},{"b_title":2,"_id":0});
+{ "b_title" : "NETWORKING" }
+{ "b_title" : "PYTHON" }
+{ "b_title" : "JAVA" }
+{ "b_title" : "CPP" }
+{ "b_title" : "PHP" }
+
+> db.book.save({"b_id":6,"b_title":"software engineering","category":"SEPM"});
+WriteResult({ "nInserted" : 1 })
+
+> db.book.find();
+{ "_id" : ObjectId("5d9d240e706bb586f75c0a50"), "b_id" : 2, "b_title" : "NETWORKING", "b_author" : "Jskatre", "cost" : 3400, "category" : "CN" }
+{ "_id" : ObjectId("5d9d2445706bb586f75c0a51"), "b_id" : 2, "b_title" : "PYTHON", "b_author" : "R.S.ANAND", "cost" : 4000, "category" : "PL" }
+{ "_id" : ObjectId("5d9d2465706bb586f75c0a52"), "b_id" : 2, "b_title" : "JAVA", "b_author" : "B.SARTHAK", "cost" : 4000, "category" : "PL" }
+{ "_id" : ObjectId("5d9d2496706bb586f75c0a53"), "b_id" : 2, "b_title" : "CPP", "b_author" : "D.SHUBHAM", "cost" : 500, "category" : "PL" }
+{ "_id" : ObjectId("5d9d24b8706bb586f75c0a54"), "b_id" : 6, "b_title" : "PHP", "b_author" : "S.VINIT", "cost" : 900, "category" : "PL" }
+{ "_id" : ObjectId("5d9d279c706bb586f75c0a55"), "b_id" : 6, "b_title" : "software engineering", "category" : "SEPM" }
+
+
+> db.book.find({"category":{$ne:"CN"}});
+{ "_id" : ObjectId("5d9d2d1d0239611632e7fa2c"), "b_id" : 3, "b_title" : "PYTHON", "b_author" : "R.S.ANAND", "cost" : 4000, "category" : "PL" }
+{ "_id" : ObjectId("5d9d2d2c0239611632e7fa2d"), "b_id" : 4, "b_title" : "JAVA", "b_author" : "B.SARTHAK", "cost" : 4000, "category" : "PL" }
+{ "_id" : ObjectId("5d9d2d390239611632e7fa2e"), "b_id" : 5, "b_title" : "CPP", "b_author" : "D.SHUBHAM", "cost" : 500, "category" : "PL" }
+{ "_id" : ObjectId("5d9d2d470239611632e7fa2f"), "b_id" : 6, "b_title" : "PHP", "b_author" : "S.VINIT", "cost" : 900, "category" : "PL" }
+
+> db.book.find({"category":{$ne:"PL"}});
+{ "_id" : ObjectId("5d9d2cd50239611632e7fa2a"), "b_id" : 1, "b_title" : "DBMS", "b_author" : "frozen", "cost" : 3000, "category" : "CN" }
+{ "_id" : ObjectId("5d9d2ce80239611632e7fa2b"), "b_id" : 2, "b_title" : "NETWORKING", "b_author" : "Jskatre", "cost" : 3400, "category" : "CN" }
+
+> db.book.find({$or:[{"category":"CN"},{"category":"PL"}]});
+{ "_id" : ObjectId("5d9d2cd50239611632e7fa2a"), "b_id" : 1, "b_title" : "DBMS", "b_author" : "frozen", "cost" : 3000, "category" : "CN" }
+{ "_id" : ObjectId("5d9d2ce80239611632e7fa2b"), "b_id" : 2, "b_title" : "NETWORKING", "b_author" : "Jskatre", "cost" : 3400, "category" : "CN" }
+{ "_id" : ObjectId("5d9d2d1d0239611632e7fa2c"), "b_id" : 3, "b_title" : "PYTHON", "b_author" : "R.S.ANAND", "cost" : 4000, "category" : "PL" }
+{ "_id" : ObjectId("5d9d2d2c0239611632e7fa2d"), "b_id" : 4, "b_title" : "JAVA", "b_author" : "B.SARTHAK", "cost" : 4000, "category" : "PL" }
+{ "_id" : ObjectId("5d9d2d390239611632e7fa2e"), "b_id" : 5, "b_title" : "CPP", "b_author" : "D.SHUBHAM", "cost" : 500, "category" : "PL" }
+{ "_id" : ObjectId("5d9d2d470239611632e7fa2f"), "b_id" : 6, "b_title" : "PHP", "b_author" : "S.VINIT", "cost" : 900, "category" : "PL" }

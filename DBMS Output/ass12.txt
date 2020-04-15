@@ -1,0 +1,107 @@
+Microsoft Windows [Version 10.0.17134.1006]
+(c) 2018 Microsoft Corporation. All rights reserved.
+
+C:\Users\Anand  RNS>mongo
+MongoDB shell version v4.2.0
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("b7e742d0-5f6e-4f89-8ce7-c1ce00abdf4b") }
+MongoDB server version: 4.2.0
+Server has startup warnings:
+2019-10-09T05:23:16.691+0530 I  CONTROL  [initandlisten]
+2019-10-09T05:23:16.691+0530 I  CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2019-10-09T05:23:16.691+0530 I  CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2019-10-09T05:23:16.691+0530 I  CONTROL  [initandlisten]
+---
+Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+and anyone you share the URL with. MongoDB may use this information to make product
+improvements and to suggest MongoDB products and deployment options to you.
+
+To enable free monitoring, run the following command: db.enableFreeMonitoring()
+To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+
+switched to db ass12
+> db.createCollection("emp1");
+{ "ok" : 1 }
+
+> db.emp1.insert({"eid":101,"ename":"ANNAD","dept":"COMP","salary":100000});
+WriteResult({ "nInserted" : 1 })
+
+
+> db.emp1.insert({"eid":101,"ename":"ANNAD","dept":"COMP","salary":200000});
+WriteResult({ "nInserted" : 1 })
+
+> db.emp1.insert({"eid":102,"ename":"SARTHAK","dept":"IT","salary":10000});
+WriteResult({ "nInserted" : 1 })
+
+> db.emp1.insert({"eid":103,"ename":"SHUBHAM","dept":"E&TC","salary":20000});
+WriteResult({ "nInserted" : 1 })
+
+> db.emp1.insert({"eid":103,"ename":"SHUBHAM","dept":"E&TC","salary":30000});
+WriteResult({ "nInserted" : 1 })
+
+> db.emp1.find().pretty();
+{
+        "_id" : ObjectId("5d9d3ddf7c1c53ba7c2f0278"),
+        "eid" : 101,
+        "ename" : "ANNAD",
+        "dept" : "COMP",
+        "salary" : 100000
+}
+{
+        "_id" : ObjectId("5d9d3e017c1c53ba7c2f027a"),
+        "eid" : 101,
+        "ename" : "ANNAD",
+        "dept" : "COMP",
+        "salary" : 200000
+}
+{
+        "_id" : ObjectId("5d9d3e1a7c1c53ba7c2f027b"),
+        "eid" : 102,
+        "ename" : "SARTHAK",
+        "dept" : "IT",
+        "salary" : 10000
+}
+{
+        "_id" : ObjectId("5d9d3e297c1c53ba7c2f027c"),
+        "eid" : 103,
+        "ename" : "SHUBHAM",
+        "dept" : "E&TC",
+        "salary" : 20000
+}
+{
+        "_id" : ObjectId("5d9d3e3e7c1c53ba7c2f027d"),
+        "eid" : 103,
+        "ename" : "SHUBHAM",
+        "dept" : "E&TC",
+        "salary" : 30000
+}
+
+> db.emp1.mapReduce(function(){emit(this.ename,this.salary);},function(key,value){return Array.sum(value)},{out:"ANDY"}).find();
+{ "_id" : "ANNAD", "value" : 300000 }
+{ "_id" : "SARTHAK", "value" : 10000 }
+{ "_id" : "SHUBHAM", "value" : 50000 }
+
+
+> db.emp1.mapReduce(function(){emit(this.dept,this.salary);},function(key,value){return Array.sum(value)},{out:"ANDY_1"}).find();
+{ "_id" : "COMP", "value" : 300000 }
+{ "_id" : "E&TC", "value" : 50000 }
+{ "_id" : "IT", "value" : 10000 }
+
+
+> show collections;
+ANDY
+ANDY_1
+emp
+emp1
+> db.ANDY.find();
+{ "_id" : "COMP", "value" : 300000 }
+{ "_id" : "E&TC", "value" : 50000 }
+{ "_id" : "IT", "value" : 10000 }
+> db.ANDY_1.find();
+{ "_id" : "COMP", "value" : 300000 }
+{ "_id" : "E&TC", "value" : 50000 }
+{ "_id" : "IT", "value" : 10000 }

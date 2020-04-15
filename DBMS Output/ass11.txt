@@ -1,0 +1,207 @@
+Microsoft Windows [Version 10.0.17134.1006]
+(c) 2018 Microsoft Corporation. All rights reserved.
+
+C:\Users\Anand  RNS>mongo
+MongoDB shell version v4.2.0
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("2b491f21-669f-4256-9c06-d3776e80d6ae") }
+MongoDB server version: 4.2.0
+Server has startup warnings:
+2019-10-09T05:23:16.691+0530 I  CONTROL  [initandlisten]
+2019-10-09T05:23:16.691+0530 I  CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2019-10-09T05:23:16.691+0530 I  CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2019-10-09T05:23:16.691+0530 I  CONTROL  [initandlisten]
+---
+Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+and anyone you share the URL with. MongoDB may use this information to make product
+improvements and to suggest MongoDB products and deployment options to you.
+
+To enable free monitoring, run the following command: db.enableFreeMonitoring()
+To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+
+> use ass11;
+switched to db ass11
+> db.createCollection("emp");
+{ "ok" : 1 }
+> db.emp.insert({'id':01,'ename':'ANAND','dept':'computer','salary':100000});
+WriteResult({ "nInserted" : 1 })
+> db.emp.insert({'id':02,'ename':'SARTHAK','dept':'IT','salary':20000});
+WriteResult({ "nInserted" : 1 })
+> db.emp.insert({'id':03,'ename':'SHUBHAM','dept':'MECH','salary':30000});
+WriteResult({ "nInserted" : 1 })
+> db.emp.insert({'id':05,'ename':'VINIT','dept':'CIVIL','salary':40000});
+WriteResult({ "nInserted" : 1 })
+> db.emp.insert({'id':04,'ename':'JON','dept':'PROD','salary':50000});
+WriteResult({ "nInserted" : 1 })
+> db.book.find().pretty();
+> db.emp.find().pretty();
+{
+        "_id" : ObjectId("5d9d309dd4a5e01fac039a92"),
+        "id" : 1,
+        "ename" : "ANAND",
+        "dept" : "computer",
+        "salary" : 100000
+}
+{
+        "_id" : ObjectId("5d9d30c2d4a5e01fac039a93"),
+        "id" : 2,
+        "ename" : "SARTHAK",
+        "dept" : "IT",
+        "salary" : 20000
+}
+{
+        "_id" : ObjectId("5d9d30e6d4a5e01fac039a94"),
+        "id" : 3,
+        "ename" : "SHUBHAM",
+        "dept" : "MECH",
+        "salary" : 30000
+}
+{
+        "_id" : ObjectId("5d9d3104d4a5e01fac039a95"),
+        "id" : 5,
+        "ename" : "VINIT",
+        "dept" : "CIVIL",
+        "salary" : 40000
+}
+{
+        "_id" : ObjectId("5d9d311ad4a5e01fac039a96"),
+        "id" : 4,
+        "ename" : "JON",
+        "dept" : "PROD",
+        "salary" : 50000
+}
+> db.emp.aggregate([{$group:{"_id":"$dept","no of employee":{$sum:1}}}])
+{ "_id" : "CIVIL", "no of employee" : 1 }
+{ "_id" : "MECH", "no of employee" : 1 }
+{ "_id" : "IT", "no of employee" : 1 }
+{ "_id" : "PROD", "no of employee" : 1 }
+{ "_id" : "computer", "no of employee" : 1 }
+
+> db.emp.aggregate([{$group:{"_id":"$dept","total salary":{$sum:"$salary"}}}])
+{ "_id" : "computer", "total salary" : 100000 }
+{ "_id" : "IT", "total salary" : 20000 }
+{ "_id" : "MECH", "total salary" : 30000 }
+{ "_id" : "PROD", "total salary" : 50000 }
+{ "_id" : "CIVIL", "total salary" : 40000 }
+
+> db.emp.aggregate([{$group:{"_id":"$dept","total salary":{$min:"$salary"}}}])
+{ "_id" : "CIVIL", "total salary" : 20000 }
+{ "_id" : "MECH", "total salary" : 30000 }
+{ "_id" : "IT", "total salary" : 40000 }
+{ "_id" : "PROD", "total salary" : 50000 }
+{ "_id" : "computer", "total salary" : 100000 }
+
+> db.emp.aggregate([{$group:{"_id":"$dept","total salary":{$max:"$salary"}}}])
+{ "_id" : "computer", "total salary" : 100000 }
+{ "_id" : "IT", "total salary" : 20000 }
+{ "_id" : "MECH", "total salary" : 30000 }
+{ "_id" : "PROD", "total salary" : 50000 }
+{ "_id" : "CIVIL", "total salary" : 40000 }
+
+> db.emp.aggregate([{$group:{"_id":"$dept","total salary":{$avg:"$salary"}}}])
+{ "_id" : "CIVIL", "total salary" : 40000 }
+{ "_id" : "MECH", "total salary" : 30000 }
+{ "_id" : "IT", "total salary" : 20000 }
+{ "_id" : "PROD", "total salary" : 50000 }
+{ "_id" : "computer", "total salary" : 100000 }
+
+> db.emp.aggregate([{$group:{"_id":"$dept","first":{$first:"$salary"}}}])
+{ "_id" : "CIVIL", "first" : 40000 }
+{ "_id" : "MECH", "first" : 30000 }
+{ "_id" : "IT", "first" : 20000 }
+{ "_id" : "PROD", "first" : 50000 }
+{ "_id" : "computer", "first" : 100000 }
+
+> db.emp.aggregate([{$group:{"_id":"$dept","last":{$last:"$salary"}}}])
+{ "_id" : "CIVIL", "last" : 100000 }
+{ "_id" : "MECH", "last" : 30000 }
+{ "_id" : "IT", "last" : 20000 }
+{ "_id" : "PROD", "last" : 50000 }
+{ "_id" : "computer", "last" : 40000 }
+
+> db.emp.createIndex({'id':1});
+{
+        "createdCollectionAutomatically" : false,
+        "numIndexesBefore" : 1,
+        "numIndexesAfter" : 2,
+        "ok" : 1
+}
+> db.emp.getIndexes();
+[
+        {
+                "v" : 2,
+                "key" : {
+                        "_id" : 1
+                },
+                "name" : "_id_",
+                "ns" : "ass11.emp"
+        },
+        {
+                "v" : 2,
+                "key" : {
+                        "id" : 1
+                },
+                "name" : "id_1",
+                "ns" : "ass11.emp"
+        }
+]
+> db.emp.createIndex({'ename':1});
+{
+        "createdCollectionAutomatically" : false,
+        "numIndexesBefore" : 2,
+        "numIndexesAfter" : 3,
+        "ok" : 1
+}
+> db.emp.getIndexes();
+[
+        {
+                "v" : 2,
+                "key" : {
+                        "_id" : 1
+                },
+                "name" : "_id_",
+                "ns" : "ass11.emp"
+        },
+        {
+                "v" : 2,
+                "key" : {
+                        "id" : 1
+                },
+                "name" : "id_1",
+                "ns" : "ass11.emp"
+        },
+        {
+                "v" : 2,
+                "key" : {
+                        "ename" : 1
+                },
+                "name" : "ename_1",
+                "ns" : "ass11.emp"
+        }
+]
+
+> db.emp.dropIndex("ename_1");
+{ "nIndexesWas" : 3, "ok" : 1 }
+> db.emp.getIndexes();
+[
+        {
+                "v" : 2,
+                "key" : {
+                        "_id" : 1
+                },
+                "name" : "_id_",
+                "ns" : "ass11.emp"
+        },
+        {
+                "v" : 2,
+                "key" : {
+                        "id" : 1
+                },
+                "name" : "id_1",
+                "ns" : "ass11.emp"
+        }
+]
